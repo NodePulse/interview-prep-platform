@@ -76,7 +76,7 @@ interface SignInParams {
   idToken: string;
 }
 
-interface SignUpParams {
+interface RegisterParams {
   uid: string;
   name: string;
   email: string;
