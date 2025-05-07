@@ -3,7 +3,6 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-<<<<<<< HEAD
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -13,18 +12,6 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-=======
-  apiKey: "AIzaSyAFd1UyRyracDIwVECr-IkwL8Bks_DMJgM",
-  authDomain: "aceflow-304cc.firebaseapp.com",
-  projectId: "aceflow-304cc",
-  storageBucket: "aceflow-304cc.firebasestorage.app",
-  messagingSenderId: "57228765266",
-  appId: "1:57228765266:web:0a43971332e9d7189d978b",
-  measurementId: "G-QYFX9NGJWM",
-};
-
-// Initialize Firebase
->>>>>>> 205ef0c4fcd7a512ec83201fe78ff803f774d0ff
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
