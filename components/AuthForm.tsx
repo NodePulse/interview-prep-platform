@@ -12,6 +12,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import FormField from "./FormField";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "@/firebase/client";
+import { login, register } from "@/lib/actions/auth.action";
 
 const authFormSchema = (type: FormType) => {
   return z.object({
@@ -38,9 +44,56 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       if (type === "register") {
+        const { name, email, password } = data;
+
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        const result = await register({
+          uid: userCredential.user.uid,
+          name: name!,
+          email,
+          password,
+        });
+
+        if (!result.success) {
+          toast.error(result.message);
+          return;
+        }
+
         toast.success("Account registered successfully. Please login.");
         router.push("/login");
       } else {
+        const { email, password } = data;
+
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        const user = (await userCredential).user;
+
+        if (!user) {
+          toast.error("Failed to log into account. Please try again.");
+          return;
+        }
+
+        const idToken = await user.getIdToken();
+
+        if (!idToken) {
+          toast.error("Failed to log into account. Please try again.");
+          return;
+        }
+
+        await login({
+          email,
+          idToken,
+        });
+
         toast.success("Login successful.");
         router.push("/");
       }
